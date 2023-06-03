@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analizador</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            background-color: #f8f9fa;
+            color: #333;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        #fileInput {
+            border-radius: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Proyecto Compiladores 2023</h1>
+    <form method="post" th:action="@{/analizar}" enctype="multipart/form-data">
+        <div class="form-group">
+            <label>Seleccionar archivo:</label>
+            <input type="file" class="form-control-file" id="archivo" name="archivo" accept=".txt">
+        </div>
+        <button type="submit" class="btn btn-primary">Analizar</button>
+    </form>
+
+    <!-- Aquí se mostrará el resultado del análisis léxico -->
+    <div id="lexicoResult" class="mt-4">
+        <h2>Resultado del análisis léxico:</h2>
+        <textarea class="form-control" rows="5" readonly th:text="${resultadoLexico}"></textarea>
+        <li th:each="token : ${resultadoLexico}">
+            <span th:text="${token}"></span>
+        </li>
+    </div>
+
+    <!-- Aquí se mostrará el resultado del análisis sintáctico
+    <div id="sintacticoResult" class="mt-4">
+        <h2>Resultado del análisis sintáctico:</h2>
+        <textarea class="form-control" rows="5" readonly th:text="${resultadoSintactico}"></textarea>
+
+    </div>
+    -->
+    <!-- Aquí se mostrará el resultado del análisis semántico
+    <div id="semanticoResult" class="mt-4">
+        <h2>Resultado del análisis semántico:</h2>
+        <textarea class="form-control" rows="5" readonly th:text="${resultadoSemantico}"></textarea>
+    </div>
+-->
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>
