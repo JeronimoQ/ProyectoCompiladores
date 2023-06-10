@@ -1,6 +1,8 @@
 package com.proyectoCompiladores.controller;
 
 import com.proyectoCompiladores.AnalizadorLexicoProyecto;
+import com.proyectoCompiladores.parser;
+import java_cup.runtime.Symbol;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+
 
 
 import javax.servlet.ServletOutputStream;
@@ -29,7 +32,7 @@ public class controller {
     }
 
 
-    @PostMapping("/analizar")
+    /*@PostMapping("/analizar")
     public String analizarArchivo(@RequestParam("archivo") MultipartFile archivo, Model model) throws IOException {
         // Lógica para realizar el análisis léxico, sintáctico y semántico del archivo
 
@@ -60,12 +63,12 @@ public class controller {
         sc.close();
 
 
-        /*byte[] contenido = archivo.getBytes();
+        *//*byte[] contenido = archivo.getBytes();
         BufferedReader reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(contenido)));
-        AnalizadorLexicoProyecto scanner = new AnalizadorLexicoProyecto(reader);*/
-        /*InputStream inputStream = archivo.getInputStream();
+        AnalizadorLexicoProyecto scanner = new AnalizadorLexicoProyecto(reader);*//*
+     *//*InputStream inputStream = archivo.getInputStream();
         Reader reader = new InputStreamReader(inputStream);
-        AnalizadorLexicoProyecto scanner = new AnalizadorLexicoProyecto(reader);*/
+        AnalizadorLexicoProyecto scanner = new AnalizadorLexicoProyecto(reader);*//*
         //List<String> resultado = new ArrayList<>();
 
         // Iterar sobre los tokens identificados por el analizador léxico
@@ -95,5 +98,51 @@ public class controller {
     private String convertInputStreamToString(InputStream inputStream) {
         Scanner scanner = new Scanner(inputStream).useDelimiter("\\A");
         return scanner.hasNext() ? scanner.next() : "";
+    }*/
+
+    @PostMapping("/analizar")
+    public String analizarArchivo(@RequestParam("archivo") MultipartFile archivo, Model model) throws IOException {
+
+        byte[] contenido = archivo.getBytes();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(contenido)));
+
+        AnalizadorLexicoProyecto lex = new AnalizadorLexicoProyecto(reader);
+        parser p = new parser(lex);
+        try {
+            //p.parse();
+            model.addAttribute("resultadoLexico", p.parse());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        List<String> resultado = new ArrayList<>();
+        List<Symbol> resultado1 = new ArrayList<>();
+        Scanner sc = new Scanner(archivo.getInputStream());
+        while (sc.hasNextLine()) {
+            String linea = sc.nextLine();
+            resultado.add(linea);
+            System.out.println(linea);
+            //System.out.println(sc.nextLine());
+        }
+        for (String res : resultado) {
+            Reader stringReader = new StringReader(res);
+            AnalizadorLexicoProyecto scan = new AnalizadorLexicoProyecto(stringReader);
+            System.out.println(scan.yytext());
+            parser p1 = new parser(scan);
+            try {
+                p1.parse();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            //System.out.println(scan.yytext() + scan.yylex());
+            //System.out.println(res);
+
+        }
+
+
+        model.addAttribute("resultadoLexico", resultado1);
+        return "index";
     }
 }
+
+

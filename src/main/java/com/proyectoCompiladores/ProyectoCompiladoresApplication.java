@@ -1,24 +1,22 @@
 package com.proyectoCompiladores;
 
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import javax.servlet.ServletOutputStream;
-import javax.sound.midi.Soundbank;
 import java.io.*;
-import java.util.Scanner;
 
 @SpringBootApplication
 public class ProyectoCompiladoresApplication {
 
-	public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException {
 
-		SpringApplication.run(ProyectoCompiladoresApplication.class, args);
-		//Reader r = new FileReader("prueba.txt");
-		//AnalizadorLexicoProyecto scanner = new AnalizadorLexicoProyecto(r);
-		//scanner.yylex();
+        SpringApplication.run(ProyectoCompiladoresApplication.class, args);
 
-		try {
+        /*Reader r = new FileReader("prueba.txt");
+        AnalizadorLexicoProyecto scanner = new AnalizadorLexicoProyecto(r);
+        scanner.yytext();*/
+
+		/*try {
 			File file = new File("prueba.txt");
 			Scanner scannerfile = new Scanner(file);
 
@@ -33,10 +31,19 @@ public class ProyectoCompiladoresApplication {
 			scannerfile.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-		}
+		}*/
 
 
+        Reader r2 = new FileReader("/Users/JSIMP/Desktop/prueba.txt");
+        AnalizadorLexicoProyecto lex = new AnalizadorLexicoProyecto(r2);
+        parser p = new parser(lex);
+        try {
+            p.parse();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-	}
+
+    }
 
 }

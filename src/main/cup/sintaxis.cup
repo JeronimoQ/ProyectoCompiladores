@@ -1,0 +1,88 @@
+package com.proyectoCompiladores;
+import java_cup.runtime.*;
+
+terminal CLAVE, TIPO, IDENTIFICADOR;
+terminal PARENTESIS_A, PARENTESIS_C, LLAVE_A, LLAVE_C;
+terminal PUNTO_COMA, COMA;
+terminal LOGICO_Y, LOGICO_O, NEGACION;
+terminal TRUE, FALSE;
+terminal NUMERO;
+terminal IGUAL, MAYOR, MAYOR_IGUAL, MENOR, MENOR_IGUAL, IGUALDAD, DIFERENTE;
+
+non terminal declaracion, declaracion_variable, sentencia_asignacion;
+non terminal tipo, identificador;
+non terminal variable, expr, letra;
+non terminal literal_entero;
+non terminal valor, sentencia_if, sentencia_if_else;
+non terminal sentencia_while, sentencia_switch, bloque;
+non terminal comparacion_expr, boolean_expr, operador_logico, operador_comparacion, literal_booleana;
+non terminal lista_declaracion, lista_variable, sentencia;
+
+
+
+start with declaracion;
+
+
+declaracion ::=  sentencia_if
+               | sentencia_if_else
+               | sentencia_while
+               | sentencia_switch
+               | declaracion_variable
+               | sentencia_asignacion
+;
+
+sentencia_if ::= CLAVE PARENTESIS_A expr PARENTESIS_C bloque
+;
+
+sentencia_if_else ::= CLAVE PARENTESIS_A expr PARENTESIS_C bloque CLAVE bloque
+;
+
+sentencia_while ::= CLAVE PARENTESIS_A expr PARENTESIS_C bloque PUNTO_COMA
+;
+
+expr ::= comparacion_expr | boolean_expr | literal_booleana
+;
+
+boolean_expr ::= operador_logico
+;
+
+comparacion_expr ::= valor operador_comparacion valor
+;
+
+valor ::= literal_entero | variable
+;
+
+literal_entero ::= NUMERO
+;
+
+literal_booleana ::= TRUE | FALSE
+;
+
+variable ::= identificador | lista_declaracion
+;
+sentencia_asignacion ::= variable IGUAL valor
+;
+
+declaracion_variable ::= tipo lista_variable
+;
+
+tipo ::= TIPO
+;
+
+lista_variable ::= variable
+;
+
+operador_logico ::= LOGICO_Y | LOGICO_O | NEGACION;
+
+operador_comparacion ::=  MAYOR | MAYOR_IGUAL | MENOR | MENOR_IGUAL | IGUALDAD | DIFERENTE
+;
+
+identificador ::= letra identificador | letra
+;
+
+letra ::= IDENTIFICADOR
+;
+
+bloque ::= LLAVE_A declaracion LLAVE_C PUNTO_COMA | LLAVE_A LLAVE_C PUNTO_COMA
+;
+
